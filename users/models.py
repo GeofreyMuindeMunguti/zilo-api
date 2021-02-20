@@ -68,8 +68,17 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "code"
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
+    @property
+    def full_name(self):
+        return self.first_name + self.last_name
+
+    @property
+    def company(self):
+        return self.company.info
+
     def __str__(self):
         return self.code or self.first_name
+    
 
 class Customer(AbstractBase):
 
@@ -96,6 +105,7 @@ class Customer(AbstractBase):
 class Company(AbstractBase):
 
     name = models.CharField(max_length=30)
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, related_name="business")
     employees = models.ManyToManyField(User, blank = True, related_name = "company")
 
     def __str__(self):
@@ -104,6 +114,7 @@ class Company(AbstractBase):
     @property
     def info(self):
         return {
+            "id": self.id,
             "name": self.name
         }
 

@@ -17,8 +17,7 @@ router.register(
     "users"
 )
 router.register(
-    "companies",
-    CompanyViewSet,
+    "companies", CompanyViewSet,
     "companies"
 )
 router.register(
@@ -38,5 +37,5 @@ router.register(
 )
 
 urlpatterns = [
-    url("", include(router.urls)),
+    url(r"", include(router.urls)),
 ]
