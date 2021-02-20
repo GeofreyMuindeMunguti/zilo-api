@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from auth.views import MyObtainTokenPairView
+from rest_framework_simplejwt.views import TokenRefreshView
 from django.conf.urls import include, url
 
 
 auth_urls = [
-    url(r"", include("rest_auth.urls")),
+    path('login/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
+    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 v1_urls = [
