@@ -1,7 +1,12 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import (
+    generics,
+    permissions
+)
 from users.serializers import (
     UserSerializer,
+    UserRegisterSerializer,
     CompanySerializer,
     CustomerSerializer,
     AddressSerializer,
@@ -36,3 +41,8 @@ class AddressViewSet(ModelViewSet):
 class StoreViewSet(ModelViewSet):
     queryset = Store.objects.all()
     serializer_class = StoreSerializer
+
+class UserRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UserRegisterSerializer
