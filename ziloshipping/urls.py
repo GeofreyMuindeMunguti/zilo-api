@@ -14,15 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from auth.views import MyObtainTokenPairView
-from rest_framework_simplejwt.views import TokenRefreshView
 from django.conf.urls import include, url
+from django.urls import path
 
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_jwt.views import obtain_jwt_token
+
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import refresh_jwt_token
+from rest_framework_jwt.views import verify_jwt_token
+
+from users.views import UserRegisterView
+#...
 
 auth_urls = [
-    path('login/', MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
-    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    url(r'^login/', obtain_jwt_token),
+    url(r'^refresh/', refresh_jwt_token),
+    url(r'^verify/', verify_jwt_token),
+    url(r"^register/", UserRegisterView.as_view(), name="register_user"),
 ]
 
 v1_urls = [
@@ -33,7 +43,7 @@ v1_urls = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('browsable/', include('rest_framework.urls')),
-    url(r"^api/v1/", include(v1_urls)),
+    # path('browsable/', include('rest_framework.urls')),
     url(r"^auth/", include(auth_urls)),
+    url(r"^api/v1/", include(v1_urls)),
 ]
